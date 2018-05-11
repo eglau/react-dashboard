@@ -51,7 +51,8 @@ class App extends React.Component {
       view: 'files',
       isSidebarVisible: true,
       files: [],
-      events: []
+      events: [],
+      isFilesLoaded: false
     }
   }
   switchView(view) {
@@ -84,7 +85,8 @@ class App extends React.Component {
   componentDidMount() {
     getFiles().then((data) => {
       this.setState({
-        files: data
+        files: data,
+        isFilesLoaded: true
       })
     });
     getEvents().then((data) => {
@@ -100,7 +102,11 @@ class App extends React.Component {
     let content;
     if (view === 'files') {
       title = 'Files';
-      content = <Files files={this.state.files} key={title} />;
+      if (this.state.isFilesLoaded) {
+        content = <Files files={this.state.files} key={title} />;
+      } else {
+        content = <p>Loading...</p>;
+      }
     } else if (view === 'events') {
       title = 'Upcoming Events';
       content = <Events events={this.state.events} key={title} />

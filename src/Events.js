@@ -3,7 +3,7 @@ import React from 'react';
 function EventDateList(props) {
   const date = props.date;
   return (
-    <div className="event-date-list">
+    <div className="contentbox">
       <h2>{date.date}</h2>
       <hr/>
       <div className="event-list">
