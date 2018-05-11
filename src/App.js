@@ -20,57 +20,14 @@ const SIDEBAR = [
   }
 ];
 
-const EVENTS = [
-  {
-    date: "Monday -- March 15, 2018 -- 03/15",
-    events: [
-      {
-        id: '1',
-        name: 'First Event',
-        time: "1:00PM - 2:00PM",
-        attendance: 0,
-        location: 'Lobby',
-        description: 'This is the first event',
-        notes: ''
-      },
-      {
-        id: '2',
-        name: 'Second Event',
-        time: "7:00AM - 4:00PM",
-        attendance: 50,
-        location: 'Meeting Room',
-        description: 'This is the second event',
-        notes: ''
-      }
-    ]
-  },
-  {
-    date: "Wednesday -- February 22, 2019 -- 02/22",
-    events: [
-      {
-        id: '2',
-        name: 'Third Event',
-        time: "3:30PM - 5:00PM",
-        attendance: 100,
-        location: 'Patio',
-        description: 'This is the third event',
-        notes: 'All meeting rooms available'
-      },
-      {
-        id: '4',
-        name: 'Fourth Event',
-        time: "3:30PM - 8:00PM",
-        attendance: 300,
-        location: 'Theatre Room',
-        description: 'This is the fourth event',
-        notes: ''
-      }
-    ]
-  }
-]
-
 function getEvents() {
-  return EVENTS;
+  return new Promise((resolve, reject) => {
+    axios('http://localhost:4000/events').then((response) => {
+      resolve(response.data)
+    }).catch((err) => {
+      reject(err);
+    });
+  });
 }
 
 function getFiles() {
@@ -83,13 +40,6 @@ function getFiles() {
   });
 }
 
-/*function getFile(id) {
-  const matches = FILES.filter((file) => {
-    return (file.id === id);
-  });
-  return (matches.length === 1) ? matches[0] : null;
-}*/
-
 function Modal(props) {
   return (<div id="modal" className="modal hidden">Hello, World!</div>);
 }
@@ -98,10 +48,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'events',
-      events: getEvents(),
+      view: 'files',
       isSidebarVisible: true,
-      test: 'not working'
+      files: [],
+      events: []
     }
   }
   switchView(view) {
@@ -136,7 +86,12 @@ class App extends React.Component {
       this.setState({
         files: data
       })
-    })
+    });
+    getEvents().then((data) => {
+      this.setState({
+        events: data
+      })
+    });
   }
   render() {
     const view = this.state.view;
@@ -155,6 +110,7 @@ class App extends React.Component {
     }
 
     let mainWidthClass;
+    let indicator;
     let sidebar;
     if (this.state.isSidebarVisible) {
       sidebar = (
@@ -173,9 +129,13 @@ class App extends React.Component {
           </ul>
         </div>
       );
+      indicator = "fas fa-angle-double-left";
     } else {
       mainWidthClass = 'full-width';
+      indicator = "fas fa-angle-double-right";
     }
+
+
 
     return (
       <div id="app">
@@ -183,12 +143,11 @@ class App extends React.Component {
           <div className="row h100">
             {sidebar}
             <div id="minimizer" className="two columns h100" onClick={() => this.toggleSidebar()}>
-                <i className="fas fa-angle-double-left"></i>
+                <i className={indicator}></i>
             </div>
           </div>
         </aside>
         <main className={mainWidthClass}>
-          <h1>{this.state.test}</h1>
           <h1>{title}</h1>
           <CSSTransitionGroup
             transitionName="example"

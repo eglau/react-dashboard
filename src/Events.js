@@ -4,7 +4,8 @@ function EventDateList(props) {
   const date = props.date;
   return (
     <div className="event-date-list">
-      <h2 className="event-date-title">{date.date}</h2>
+      <h2>{date.date}</h2>
+      <hr/>
       <div className="event-list">
         {date.events.map((event, index) => {
           return <EventListRow key={index} event={event} />

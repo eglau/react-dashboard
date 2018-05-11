@@ -181,15 +181,11 @@ div.event-row-right h3, div.event-row-right p {
   margin-bottom: 5px;
 }
 
-h2.event-date-title {
-  border-bottom: 1px solid #aaa;
-}
-
 div.event-date-list {
-  border: 1px solid #aaa;
-  padding: 15px;
+  border-radius: 5px;
+  padding: 20px;
   margin-bottom: 30px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 5px 0px rgba(100,100,100,0.5);
 }
 
 div.event-list {
