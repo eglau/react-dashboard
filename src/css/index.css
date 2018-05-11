@@ -1,6 +1,6 @@
 @import 'https://use.fontawesome.com/releases/v5.0.12/css/all.css';
 
-html, body, div#root, aside#sidebar { height: 100%; }
+html, body, div#root, aside { height: 100%; }
 
 h1 { font-size: 3em; }
 h2 { font-size: 2.2em; }
@@ -23,27 +23,30 @@ body {
   overflow: hidden;
 }
 
-aside#sidebar {
+#sidebar {
+  xpadding: 0 0 0 10px;
+}
+
+aside {
   box-sizing: border-box;
   width: 200px;
-  padding: 0 0 0 10px;
   position: fixed;
 }
 
-aside#sidebar ul {
+aside ul {
   list-style: none;
 }
 
-aside#sidebar ul#localnav li {
+aside ul#localnav li {
   padding: 10px 15px;
   margin: 0;
 }
 
-aside#sidebar ul#localnav li.active {
+aside ul#localnav li.active {
   background-color: lightgoldenrodyellow;
 }
 
-aside#sidebar ul#localnav li:hover {
+aside ul#localnav li:hover {
   background-color: lightgoldenrodyellow;
   cursor: pointer;
 }
@@ -193,17 +196,19 @@ div.event-list {
 }
 
 div#minimizer {
-  background-color: #ddd;
+  background-color: #ededed;
+  margin-left: 0 !important;
 }
 
 div#minimizer:hover {
   cursor: pointer;
-  background-color: #eee;
+  background-color: #fafafa;
 }
 
 div#minimizer i {
-  position: fixed;
+  position: relative;
   top: 50%;
+  left: 25%;
 }
 
 .h100 {

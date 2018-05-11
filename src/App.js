@@ -114,7 +114,7 @@ class App extends React.Component {
     let sidebar;
     if (this.state.isSidebarVisible) {
       sidebar = (
-        <div className="ten columns">
+        <div id="sidebar" className="ten columns">
           <ul id="localnav">
             {SIDEBAR.map((link) => {
               if (link.view === view) {
@@ -122,10 +122,6 @@ class App extends React.Component {
               }
               return <li key={link.view} onClick={() => this.switchView(link.view)}>{link.name}</li>
             })}
-          </ul>
-          <h4>Links</h4>
-          <ul>
-            <li><a href="//www.google.com/">GG</a></li>
           </ul>
         </div>
       );
@@ -139,7 +135,7 @@ class App extends React.Component {
 
     return (
       <div id="app">
-        <aside id="sidebar">
+        <aside>
           <div className="row h100">
             {sidebar}
             <div id="minimizer" className="two columns h100" onClick={() => this.toggleSidebar()}>
