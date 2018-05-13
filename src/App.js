@@ -2,6 +2,7 @@ import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Files from './Files.js';
 import Events from './Events.js';
+import Homepage from './Homepage.js';
 
 import axios from 'axios';
 
@@ -48,11 +49,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'files',
+      view: 'home',
       isSidebarVisible: true,
       files: [],
       events: [],
-      isFilesLoaded: false
+      isFilesLoaded: false,
+      isEventsLoaded: false
     }
   }
   switchView(view) {
@@ -68,6 +70,7 @@ class App extends React.Component {
           view: 'events'
         }
         break;
+      case 'home':
       default:
         state = {
           view: 'home'
@@ -91,7 +94,8 @@ class App extends React.Component {
     });
     getEvents().then((data) => {
       this.setState({
-        events: data
+        events: data,
+        isEventsLoaded: true
       })
     });
   }
@@ -109,10 +113,14 @@ class App extends React.Component {
       }
     } else if (view === 'events') {
       title = 'Upcoming Events';
-      content = <Events events={this.state.events} key={title} />
+      if (this.state.isEventsLoaded) {
+        content = <Events events={this.state.events} key={title} />
+      } else {
+        content = <p>Loading...</p>;
+      }
     } else {
-      title = 'Oh no!'
-      content = <p key={'1'}>{view} not implemented</p>
+      title = 'Welcome!';
+      content = <Homepage />
     }
 
     let mainWidthClass;

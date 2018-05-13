@@ -32,26 +32,29 @@ class FileTable extends React.Component {
     let button;
     if (!isMinimized) {
       filetable = (
-        <table className="file-table u-full-width">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Size</th>
-              <th>Upload Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.files.map((file, index) => {
-              return (
-                <tr key={file.id} onClick={() => this.downloadFile(file.id)}>
-                  <td>{file.name}</td>
-                  <td className="w20">{toReadableSize(file.size)}</td>
-                  <td className="w20">{file.date}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+        <div>
+          <hr />
+          <table className="file-table u-full-width">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Upload Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.files.map((file, index) => {
+                return (
+                  <tr key={file.id} onClick={() => this.downloadFile(file.id)}>
+                    <td>{file.name}</td>
+                    <td className="w15">{toReadableSize(file.size)}</td>
+                    <td className="w20">{file.date}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
       );
       button = <button className="minimize right" onClick={() => this.toggle()}><i className="fas fa-minus"></i></button>;
     } else {
@@ -59,7 +62,7 @@ class FileTable extends React.Component {
       button = <button className="minimize right" onClick={() => this.toggle()}><i className="fas fa-plus"></i></button>;
     }
     return (
-      <div className="files-section">
+      <div className="contentbox">
         <header className="file-table-header">
           {button}
           <h2>{this.state.name}</h2>
