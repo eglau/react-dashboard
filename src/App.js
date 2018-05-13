@@ -2,7 +2,6 @@ import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Files from './Files.js';
 import Events from './Events.js';
-import Homepage from './Homepage.js';
 
 import axios from 'axios';
 
@@ -45,12 +44,20 @@ function Modal(props) {
   return (<div id="modal" className="modal hidden">Hello, World!</div>);
 }
 
+function Loading() {
+  return (
+    <div className="loader">
+      <div className="loader-icon"></div>
+      <span className="loader-text">Loading...</span>
+    </div>
+  );
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: 'home',
-      isSidebarVisible: true,
       files: [],
       events: [],
       isFilesLoaded: false,
@@ -79,12 +86,6 @@ class App extends React.Component {
     }
     this.setState(state);
   }
-  toggleSidebar() {
-    const isSidebarVisible = this.state.isSidebarVisible;
-    this.setState({
-      isSidebarVisible: !isSidebarVisible
-    })
-  }
   componentDidMount() {
     getFiles().then((data) => {
       this.setState({
@@ -109,26 +110,27 @@ class App extends React.Component {
       if (this.state.isFilesLoaded) {
         content = <Files files={this.state.files} key={title} />;
       } else {
-        content = <p>Loading...</p>;
+        content = <Loading />;
       }
     } else if (view === 'events') {
       title = 'Upcoming Events';
       if (this.state.isEventsLoaded) {
         content = <Events events={this.state.events} key={title} />
       } else {
-        content = <p>Loading...</p>;
+        content = <Loading />;
       }
     } else {
       title = 'Welcome!';
-      content = <Homepage />
+      content = (
+        <div id="homepage">
+          <iframe id="forecast_embed" frameBorder="0" height="245" width="100%" title="weather" src="//forecast.io/embed/#lat=37.3860517&lon=-122.0838511"></iframe>
+        </div>
+      )
     }
 
-    let mainWidthClass;
-    let indicator;
-    let sidebar;
-    if (this.state.isSidebarVisible) {
-      sidebar = (
-        <div id="sidebar" className="ten columns">
+    return (
+      <div id="app">
+        <aside>
           <ul id="localnav">
             {SIDEBAR.map((link) => {
               if (link.view === view) {
@@ -137,27 +139,8 @@ class App extends React.Component {
               return <li key={link.view} onClick={() => this.switchView(link.view)}>{link.name}</li>
             })}
           </ul>
-        </div>
-      );
-      indicator = "fas fa-angle-double-left";
-    } else {
-      mainWidthClass = 'full-width';
-      indicator = "fas fa-angle-double-right";
-    }
-
-
-
-    return (
-      <div id="app">
-        <aside>
-          <div className="row h100">
-            {sidebar}
-            <div id="minimizer" className="two columns h100" onClick={() => this.toggleSidebar()}>
-                <i className={indicator}></i>
-            </div>
-          </div>
         </aside>
-        <main className={mainWidthClass}>
+        <main>
           <h1>{title}</h1>
           <CSSTransitionGroup
             transitionName="example"
