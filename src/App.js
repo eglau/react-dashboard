@@ -1,9 +1,9 @@
 import React from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
+//import { CSSTransitionGroup } from 'react-transition-group';
 import Files from './Files.js';
 import Events from './Events.js';
 
-import axios from 'axios';
+//import axios from 'axios';
 
 const SIDEBAR = [
   {
@@ -15,43 +15,10 @@ const SIDEBAR = [
     view: 'files'
   },
   {
-    name: 'Events',
+    name: 'Upcoming Events',
     view: 'events'
   }
 ];
-
-function getEvents() {
-  return new Promise((resolve, reject) => {
-    axios('http://localhost:4000/events').then((response) => {
-      resolve(response.data)
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-}
-
-function getFiles() {
-  return new Promise((resolve, reject) => {
-    axios('http://localhost:4000/files').then((response) => {
-      resolve(response.data)
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-}
-
-function Modal(props) {
-  return (<div id="modal" className="modal hidden">Hello, World!</div>);
-}
-
-function Loading() {
-  return (
-    <div className="loader">
-      <div className="loader-icon"></div>
-      <span className="loader-text">Loading...</span>
-    </div>
-  );
-}
 
 class App extends React.Component {
   constructor(props) {
@@ -86,46 +53,21 @@ class App extends React.Component {
     }
     this.setState(state);
   }
-  componentDidMount() {
-    getFiles().then((data) => {
-      this.setState({
-        files: data,
-        isFilesLoaded: true
-      })
-    });
-    getEvents().then((data) => {
-      this.setState({
-        events: data,
-        isEventsLoaded: true
-      })
-    });
-  }
   render() {
     const view = this.state.view;
 
-    let title;
     let content;
     if (view === 'files') {
-      title = 'Files';
-      if (this.state.isFilesLoaded) {
-        content = <Files files={this.state.files} key={title} />;
-      } else {
-        content = <Loading />;
-      }
+      content = <Files files={this.state.files} />;
     } else if (view === 'events') {
-      title = 'Upcoming Events';
-      if (this.state.isEventsLoaded) {
-        content = <Events events={this.state.events} key={title} />
-      } else {
-        content = <Loading />;
-      }
+      content = <Events events={this.state.events} />;
     } else {
-      title = 'Welcome!';
       content = (
         <div id="homepage">
+          <h1>Welcome!</h1>
           <iframe id="forecast_embed" frameBorder="0" height="245" width="100%" title="weather" src="//forecast.io/embed/#lat=37.3860517&lon=-122.0838511"></iframe>
         </div>
-      )
+      );
     }
 
     return (
@@ -140,19 +82,8 @@ class App extends React.Component {
             })}
           </ul>
         </aside>
-        <main>
-          <h1>{title}</h1>
-          <CSSTransitionGroup
-            transitionName="example"
-            transitionAppear={true}
-            transitionAppearTimeout={300}
-            transitionEnterTimeout={300}
-            transitionLeave={false}>
-            {content}
-          </CSSTransitionGroup>
-        </main>
+        <main>{content}</main>
         <div className="clear"></div>
-        <Modal content={null} />
       </div>
     );
   }

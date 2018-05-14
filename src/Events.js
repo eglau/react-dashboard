@@ -1,4 +1,8 @@
 import React from 'react';
+import Common from './Common.js';
+
+//import { CSSTransitionGroup } from 'react-transition-group';
+import axios from 'axios';
 
 function EventDateList(props) {
   const date = props.date;
@@ -48,8 +52,6 @@ function EventListRow(props) {
     );
   }
 
-  //const notes = (event.notes) ? (<p>{event.notes}</p>) : null;
-
   return (
     <div className="event row" data-id={event.id}>
       {leftblock}
@@ -72,11 +74,31 @@ class Events extends React.Component {
       events: props.events
     }
   }
+  componentDidMount() {
+    let that = this;
+    axios('http://localhost:4000/events').then((response) => {
+      that.setState({
+        events: response.data,
+        isLoaded: true
+      });
+    }).catch((err) => {
+      that.setState({
+        error: 'Could not connect to Events database'
+      });
+    });
+  }
   render() {
-    const events = this.state.events;
+    if (this.state.error) {
+      return <Common.ErrorMessage message={this.state.error} />;
+    }
+
+    if (!this.state.isLoaded) {
+      return <Common.Loading />;
+    }
     return (
       <div id="events">
-        {events.map((date, index) => {
+        <h1>Upcoming Events</h1>
+        {this.state.events.map((date, index) => {
           return <EventDateList key={index} date={date} />
         })}
       </div>

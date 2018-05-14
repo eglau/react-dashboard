@@ -1,5 +1,8 @@
 import React from 'react';
+import Common from './Common.js';
+
 import { CSSTransitionGroup } from 'react-transition-group';
+import axios from 'axios';
 
 function toReadableSize(size) {
   let output;
@@ -82,14 +85,38 @@ class Files extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: props.files
+      title: props.title,
+      data: props.files,
+      isLoaded: false,
+      error: null
     }
   }
+  componentDidMount() {
+    let that = this;
+    axios('http://localhost:4000/files').then((response) => {
+      that.setState({
+        data: response.data,
+        isLoaded: true
+      });
+    }).catch((err) => {
+      that.setState({
+        error: 'Could not connect to Files database'
+      });
+    });
+  }
   render() {
-    const data = this.state.data;
+    if (this.state.error) {
+      return <Common.ErrorMessage message={this.state.error} />;
+    }
+
+    if (!this.state.isLoaded) {
+      return <Common.Loading />;
+    }
+
     return (
       <div id="files">
-        {data.map((section, index) => {
+        <h1>File Portal</h1>
+        {this.state.data.map((section, index) => {
           return (
             <FileTable key={index} name={section.name} files={section.files} />
           )
