@@ -1,9 +1,9 @@
 @import 'https://use.fontawesome.com/releases/v5.0.12/css/all.css';
 
-html, body, aside, #root, #app { height: 100%; }
-h1, h2, h3, h4 {
-  line-height: 1;
-}
+/*html, body, aside, #root { height: 100%; }*/
+html, body, aside { height: 100%; }
+#root, #app { height: 100%; }
+h1, h2, h3, h4 { line-height: 1;}
 h1 { font-size: 2em; }
 h2 { font-size: 1.8em; }
 h3 { font-size: 1.6em; }
@@ -12,18 +12,15 @@ h4 { font-size: 1.4em; }
 hr { margin: 2rem 0 2.5rem 0; }
 
 body {
-  background-color: #ddd;
+  background-color: #444;
 }
 
-#root {
+#app {
   box-sizing: border-box;
   width: 1000px;
   margin: 0 auto;
   background-color: #fff;
-  overflow: hidden;
-}
-
-#app {
+  height: 100%;
   overflow-y: scroll;
 }
 
@@ -44,11 +41,13 @@ aside ul#localnav li {
 }
 
 aside ul#localnav li.active {
-  background-color: lightgoldenrodyellow;
+  background-color: maroon;
+  color: #fff;
 }
 
 aside ul#localnav li:hover {
-  background-color: lightgoldenrodyellow;
+  background-color: maroon;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -57,39 +56,25 @@ main {
   width: 800px;
   float: right;
   padding: 30px;
-  min-height: 500px;
 }
 
 table {
   margin-bottom: 0;
 }
 table.file-table tbody tr:hover {
-  background-color: lightskyblue;
+  background-color: lightyellow;
   cursor: pointer;
+}
+table.file-table td:first-child, table.file-table th:first-child {
+  padding-left: 10px;
+}
+table.file-table td:last-child, table.file-table th:last-child {
+  padding-right: 10px;
 }
 
 td.w10 { width: 10%; }
 td.w15 { width: 15%; }
 td.w20 { width: 20%; }
-
-.example-appear {
-  opacity: 0.01;
-}
-.example-appear.example-appear-active {
-  opacity: 1;
-  transition: opacity .5s ease-in;
-}
-.example-enter {
-  opacity: 0.1;
-}
-.example-enter.example-enter-active {
-  opacity: 1;
-  transition: opacity 300ms ease-in;
-}
-.example-leave.example-leave-active {
-  opacity: 0.01;
-  transition: opacity 100ms ease-in;
-}
 
 /*
 enter.active -> enter
@@ -106,12 +91,18 @@ leave.active -> leave
   transition: transform 200ms linear;
   transform: translateY(-100px) scaleY(0);
 }
+.fadein-enter {
+  opacity: 1;
+}
+.fadein-enter-active {
+  opacity: 0;
+}
 
 .right {
   float: right;
 }
 
-div.cleaer {
+div.clear {
   clear: both;
   line-height: 0;
 }
@@ -162,10 +153,12 @@ div.event-time-no-attendance {
   display: none;
 }
 
-
+div.event.row {
+  padding: 10px;  
+}
 div.event.row:hover{
   cursor: pointer;
-  background-color: lightskyblue;
+  background-color: lightyellow;
 }
 
 div.event-row-right h3, div.event-row-right p {

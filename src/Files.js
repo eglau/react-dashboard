@@ -14,7 +14,7 @@ function toReadableSize(size) {
   return output;
 }
 
-class FileTable extends React.Component {
+class FileBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -118,7 +118,7 @@ class Files extends React.Component {
         <h1>File Portal</h1>
         {this.state.data.map((section, index) => {
           return (
-            <FileTable key={index} name={section.name} files={section.files} />
+            <FileBox key={index} name={section.name} files={section.files} />
           )
         })}
       </div>

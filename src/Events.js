@@ -4,7 +4,7 @@ import Common from './Common.js';
 //import { CSSTransitionGroup } from 'react-transition-group';
 import axios from 'axios';
 
-function EventDateList(props) {
+function EventBox(props) {
   const date = props.date;
   return (
     <div className="contentbox">
@@ -12,14 +12,14 @@ function EventDateList(props) {
       <hr/>
       <div className="event-list">
         {date.events.map((event, index) => {
-          return <EventListRow key={index} event={event} />
+          return <EventBoxItem key={index} event={event} />
         })}
       </div>
     </div>
   );
 }
 
-function EventListRow(props) {
+function EventBoxItem(props) {
   const event = props.event;
 
   let leftblock;
@@ -97,9 +97,8 @@ class Events extends React.Component {
     }
     return (
       <div id="events">
-        <h1>Upcoming Events</h1>
         {this.state.events.map((date, index) => {
-          return <EventDateList key={index} date={date} />
+          return <EventBox key={index} date={date} />
         })}
       </div>
     );
