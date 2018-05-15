@@ -9,15 +9,18 @@ import Homepage from './Homepage.js';
 const SIDEBAR = [
   {
     name: 'Homepage',
-    view: 'home'
+    view: 'home',
+    icon: 'fas fa-home'
   },
   {
     name: 'File Portal',
-    view: 'files'
+    view: 'files',
+    icon: 'fas fa-list-alt'
   },
   {
     name: 'Upcoming Events',
-    view: 'events'
+    view: 'events',
+    icon: 'fas fa-calendar-alt'
   }
 ];
 

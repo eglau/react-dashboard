@@ -93,7 +93,7 @@ class Files extends React.Component {
   }
   componentDidMount() {
     let that = this;
-    axios('http://localhost:4000/files').then((response) => {
+    axios('http://192.168.1.81:4000/files').then((response) => {
       that.setState({
         data: response.data,
         isLoaded: true

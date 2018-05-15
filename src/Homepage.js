@@ -14,7 +14,7 @@ class Homepage extends React.Component {
   }
   componentDidMount() {
     let that = this;
-    axios('http://localhost:4000/events').then((response) => {
+    axios('http://192.168.1.81:4000/events').then((response) => {
       that.setState({
         events: response.data,
         isLoaded: true

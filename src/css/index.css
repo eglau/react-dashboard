@@ -2,7 +2,7 @@
 
 /*html, body, aside, #root { height: 100%; }*/
 html, body, aside { height: 100%; }
-#root, #app { height: 100%; }
+#root, #app, main { min-height: 100vh; }
 h1, h2, h3, h4 { line-height: 1;}
 h1 { font-size: 2em; }
 h2 { font-size: 1.8em; }
@@ -13,21 +13,19 @@ hr { margin: 2rem 0 2.5rem 0; }
 
 body {
   background-color: #444;
+  overflow: auto;
 }
 
 #app {
   box-sizing: border-box;
-  width: 1000px;
   margin: 0 auto;
-  background-color: #fff;
-  height: 100%;
-  overflow-y: scroll;
 }
 
 aside {
-  background-color: #eee;
+  xbackground-color: #eee;
+  background-color: #444;
   box-sizing: border-box;
-  width: 200px;
+  width: 15vw;
   position: fixed;
 }
 
@@ -38,6 +36,7 @@ aside ul {
 aside ul#localnav li {
   padding: 10px 15px;
   margin: 0;
+  background-color: #eee;
 }
 
 aside ul#localnav li.active {
@@ -52,10 +51,12 @@ aside ul#localnav li:hover {
 }
 
 main {
+  background-color: #fff;
   box-sizing: border-box;
-  width: 800px;
-  float: right;
+  width: calc(100% - 15vw);
   padding: 30px;
+  position: absolute;
+  left: 15vw;
 }
 
 table {
@@ -98,7 +99,7 @@ leave.active -> leave
   opacity: 0;
 }
 
-.right {
+button.right {
   float: right;
 }
 
