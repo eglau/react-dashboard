@@ -225,7 +225,7 @@ div.loader div.loader-icon {
 }
 div.loader {
   text-align: center;
-
+  color: #777;
   position: relative;
   top: 100px;
 }

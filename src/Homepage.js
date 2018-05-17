@@ -1,34 +1,69 @@
 import React from 'react';
+
 import Events from './Events.js';
-import Common from './Common.js';
-import axios from 'axios';
+
 
 
 class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      events: [],
-      isLoaded: false
+      events: []
     }
   }
-  componentDidMount() {
-    let that = this;
-    axios('http://192.168.1.81:4000/events').then((response) => {
-      that.setState({
-        events: response.data,
-        isLoaded: true
+  readFromGoogleSheets() {
+    const self = this;
+    const gapi = window.gapi;
+    
+    window.gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: '1odDYjVRSktN_5csh3xQIBQzME2ME4q6Gwj7Oj5lni7M',
+      range: 'A2:H',
+    }).then((response) => {
+      let eventsListing = [];
+      const today = new Date().setHours(0, 0, 0, 0);
+      response.result.values.filter((event) => {
+        const date = new Date(event[0]);
+        return (today === date.setHours(0, 0, 0, 0));
+      }).map((event) => {
+        //check if listing for date exists and get index if so
+        let listingIndex = -1;
+        for (let i = 0; i < eventsListing.length; i++) {
+          if (eventsListing[i].date === event[0]) {
+            listingIndex = i;
+          }
+        }
+        //create listing if nonexistant
+        if (listingIndex === -1) {
+          listingIndex = eventsListing.length;
+          eventsListing.push({
+            date: event[0],
+            events: []
+          });
+        }
+        //add event to listing
+        eventsListing[listingIndex].events.push({
+          id: '123',
+          name: event[5],
+          time: `${event[1]} - ${event[2]}`,
+          attendance: event[3],
+          location: event[6],
+          details: event[7]
+        });
+        return null; //suppress warning message
       });
-    }).catch((err) => {
-      that.setState({
-        error: 'Could not connect to Events database'
+      self.setState({
+        events: eventsListing
+      })
+    }, (response) => {
+      self.setState({
+        error: response.result.error.message
       });
     });
   }
+  componentDidMount() {
+    this.readFromGoogleSheets();  
+  }
   render() {
-    if (!this.state.isLoaded) {
-      return <Common.Loading />;
-    }
     return (
       <div id="homepage">
         <h1>Welcome!</h1>

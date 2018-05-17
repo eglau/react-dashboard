@@ -1,10 +1,15 @@
 import React from 'react';
 //import { CSSTransitionGroup } from 'react-transition-group';
+
+
+import cfg from './config.json';
+import Common from './Common.js';
 import Files from './Files.js';
 import Events from './Events.js';
 import Homepage from './Homepage.js';
 
-//import axios from 'axios';
+
+const GAPI_KEY = cfg.apikey; //load from local config file
 
 const SIDEBAR = [
   {
@@ -24,27 +29,63 @@ const SIDEBAR = [
   }
 ];
 
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: 'home',
-      files: [],
-      events: [],
-      isFilesLoaded: false,
-      isEventsLoaded: false
+      isGoogleAPILoaded: false
     }
+  }
+  loadGoogleAPIClient(script) {
+    console.log(script);
+    if (script.getAttribute('gapi_processed')) {
+      const gapi = window.gapi;
+      gapi.load('client', () => {
+        gapi.client.setApiKey(GAPI_KEY);
+        gapi.client.load('https://sheets.googleapis.com/$discovery/rest?version=v4').then(() => {
+          this.setState({ isGoogleAPILoaded: true });
+        });
+      });
+    } else {
+      setTimeout(() => this.loadGoogleAPIClient(script), 1000);
+    }
+  }
+  loadGoogleAPI() {
+    const script = document.createElement('script');
+    //script.async = true;
+    script.src = 'https://apis.google.com/js/api.js';
+    script.onload = () => {
+      //this.loadGoogleAPIClient(script);
+      const gapi = window.gapi;
+      gapi.load('client', () => {
+        gapi.client.setApiKey(GAPI_KEY);
+        gapi.client.load('https://sheets.googleapis.com/$discovery/rest?version=v4').then(() => {
+          this.setState({ isGoogleAPILoaded: true });
+        });
+      });
+    };
+    document.body.appendChild(script);
+  }
+  componentDidMount() {
+    this.loadGoogleAPI();
   }
   render() {
     const view = this.state.view;
 
     let content;
-    if (view === 'files') {
-      content = <Files files={this.state.files} />;
-    } else if (view === 'events') {
-      content = <Events events={this.state.events} />;
+    if (!this.state.isGoogleAPILoaded) {
+      content = <Common.Loading />;
     } else {
-      content = <Homepage />;
+      if (view === 'files') {
+        content = <Files files={this.state.files} />;
+      } else if (view === 'events') {
+        content = <Events events={this.state.events} />;
+      } else {
+        content = <Homepage />;
+      }
     }
 
     return (

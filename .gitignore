@@ -1,3 +1,5 @@
 build/
 
 ignoreme/
+
+src/config.json
